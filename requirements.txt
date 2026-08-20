@@ -1,0 +1,4 @@
+google-genai
+pytrends
+requests
+python-dotenv
