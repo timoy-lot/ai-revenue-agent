@@ -2,17 +2,12 @@ import os
 from google import genai
 
 def generate_affiliate_article(topic: str, affiliate_link: str) -> str:
-    """
-    Generates an SEO markdown article and formats Amazon affiliate search links.
-    """
-    # 1. Initialize modern Gemini client
-    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    # Google GenAI SDK automatically detects GEMINI_API_KEY from environment variables
+    client = genai.Client()
 
-    # 2. Format the Amazon Affiliate Search Link
     search_query = topic.replace(" ", "+")
     amazon_affiliate_url = f"https://www.amazon.com/s?k={search_query}&tag={affiliate_link}"
 
-    # 3. Instruct Gemini to include the link in the article
     prompt = f"""
     Write a comprehensive, highly engaging, SEO-optimized review article about "{topic}".
     
@@ -28,7 +23,6 @@ def generate_affiliate_article(topic: str, affiliate_link: str) -> str:
         contents=prompt,
     )
 
-    # 4. Save generated Markdown to output directory
     os.makedirs("output", exist_ok=True)
     filename = topic.lower().replace(" ", "-") + ".md"
     filepath = os.path.join("output", filename)
