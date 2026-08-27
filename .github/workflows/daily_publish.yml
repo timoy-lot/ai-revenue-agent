@@ -1,24 +1,12 @@
-name: Daily AI Affiliate Content Automation
-
-on:
-  schedule:
-    - cron: '0 8 * * *'
-  workflow_dispatch:
-
-jobs:
-  build-and-publish:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
     - name: Install Dependencies
       run: |
@@ -34,7 +22,5 @@ jobs:
 
     - name: Commit and Push Changes
       run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add output/ index.html
+        git add output/
         git diff --quiet || git diff --staged --quiet || (git commit -m "chore: daily automated content publish [skip ci]" && git push)
